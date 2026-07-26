@@ -1,0 +1,120 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Skystore{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        .content {
+            flex: 1;
+        }
+        .hero-section {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+        }
+        .text-primary-custom {
+            color: #0d6efd;
+        }
+        footer {
+            background-color: #212529;
+            color: white;
+            padding: 40px 0 20px;
+        }
+        footer a {
+            color: #adb5bd;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: white;
+        }
+        .footer-heading {
+            color: #0d6efd;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .btn-outline-light {
+            border-radius: 0;
+            padding: 10px 30px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .btn-outline-light:hover {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- МЕНЮ (подключается из отдельного файла) -->
+    {% include 'catalog/menu.html' %}
+
+        <!-- ЗАГОЛОВОК САЙТА -->
+    <div class="text-center mt-4">
+        <h1 class="display-3 fw-bold text-primary-custom">{% block hero_title %}Skystore{% endblock %}</h1>
+        <p class="lead text-primary-custom">{% block hero_text %}Интернет-магазин с разными товарами{% endblock %}</p>
+    </div>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <div class="container my-5 content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- ФУТЕР -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <h5 class="footer-heading">SkyStore</h5>
+                    <small class="text-white-50">&copy; 2026</small>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="footer-heading">Категории</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Рассылки</a></li>
+                        <li><a href="#">Телеграм боты</a></li>
+                        <li><a href="#">Полезные утилиты</a></li>
+                        <li><a href="#">Веб-приложения</a></li>
+                        <li><a href="#">Микросервисы</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="footer-heading">Дополнительно</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Мы пишем</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="footer-heading">О нас</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/contacts/">Контакты</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+</body>
+</html>
