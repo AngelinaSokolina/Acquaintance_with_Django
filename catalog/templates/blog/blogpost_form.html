@@ -1,0 +1,51 @@
+<!--форма (создание и редактирование)-->
+
+{% extends 'catalog/base.html' %}
+
+{% block title %}
+    {% if object %}Редактировать статью{% else %}Создать статью{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card shadow-sm border-0" style="border-radius: 8px; margin: 0 auto;">
+            <div class="card-body">
+                <h4 class="card-title fw-bold mb-4 text-center">Создать статью</h4>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Заголовок -->
+                    <div class="mb-5">
+                        <label for="{{ form.title.id_for_label }}" class="form-label fw-semibold d-block">Заголовок</label>
+                        <input type="text" name="{{ form.title.name }}" id="{{ form.title.id_for_label }}" class="form-control w-100" value="{{ form.title.value|default:'' }}">
+                    </div>
+
+                    <!-- Содержание -->
+                    <div class="mb-5">
+                        <label for="{{ form.content.id_for_label }}" class="form-label fw-semibold d-block">Содержание</label>
+                        <textarea name="{{ form.content.name }}" id="{{ form.content.id_for_label }}" class="form-control w-100" rows="5">{{ form.content.value|default:'' }}</textarea>
+                    </div>
+
+                    <!-- Изображение -->
+                    <div class="mb-4">
+                        <label for="{{ form.preview.id_for_label }}" class="form-label fw-semibold d-block">Изображение</label>
+                        {{ form.preview }}
+                    </div>
+
+                    <!-- Признак публикации -->
+                    <div class="mb-3">
+                        <label for="{{ form.is_published.id_for_label }}" class="form-label">Публиковать</label>
+                        {{ form.is_published }}
+                    </div>
+
+                    <div class="d-flex gap-2 mt-10 mb-3 ">
+                        <button type="submit" class="btn btn-success px-4">Сохранить</button>
+                        <a href="{% url 'blog:list' %}" class="btn btn-outline-secondary px-4">Отмена</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
