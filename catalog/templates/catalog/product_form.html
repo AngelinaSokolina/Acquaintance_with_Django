@@ -1,0 +1,64 @@
+<!-- форма создания/редактирования товара -->
+
+{% extends 'catalog/base.html' %}
+
+{% block title %}
+    {% if object %}Редактировать товар{% else %}Создать товар{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card shadow-sm border-0" style="border-radius: 8px; margin: 0 auto;">
+            <div class="card-body">
+                <h4 class="card-title fw-bold mb-4 text-center">
+                    {% if object %}Редактировать товар{% else %}Создать товар{% endif %}
+                </h4>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Название -->
+                    <div class="mb-5">
+                        <label for="{{ form.name.id_for_label }}" class="form-label fw-semibold d-block">Название</label>
+                        <input type="text" name="{{ form.name.name }}" id="{{ form.name.id_for_label }}" class="form-control w-100" value="{{ form.instance.name|default:'' }}">
+                    </div>
+
+                    <!-- Описание -->
+                    <div class="mb-5">
+                        <label for="{{ form.description.id_for_label }}" class="form-label fw-semibold d-block">Описание</label>
+                        <textarea name="{{ form.description.name }}" id="{{ form.description.id_for_label }}" class="form-control w-100" rows="5">{{ form.instance.description|default:'' }}</textarea>
+                    </div>
+
+                    <!-- Изображение -->
+                    <div class="mb-4">
+                        <label for="{{ form.image.id_for_label }}" class="form-label fw-semibold d-block">Изображение</label>
+                        {{ form.image }}
+                        {% if form.instance.image %}
+                            <div class="mt-2">
+                                <small>Текущее изображение: <a href="{{ form.instance.image.url }}" target="_blank">посмотреть</a></small>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Категория -->
+                    <div class="mb-4">
+                        <label for="{{ form.category.id_for_label }}" class="form-label fw-semibold d-block">Категория</label>
+                        {{ form.category }}
+                    </div>
+
+                    <!-- Цена -->
+                    <div class="mb-4">
+                        <label for="{{ form.price.id_for_label }}" class="form-label fw-semibold d-block">Цена</label>
+                        <input type="number" step="0.01" name="{{ form.price.name }}" id="{{ form.price.id_for_label }}" class="form-control w-100" value="{{ form.instance.price|default:'' }}">
+                    </div>
+
+                    <div class="d-flex gap-2 mt-3 mb-3">
+                        <button type="submit" class="btn btn-success px-4">Сохранить</button>
+                        <a href="{% url 'catalog:home' %}" class="btn btn-outline-secondary px-4">Отмена</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
