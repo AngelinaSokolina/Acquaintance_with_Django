@@ -3,25 +3,59 @@
 {% block title %}Главная - Skystore{% endblock %}
 
 {% block content %}
+<!-- Кнопка создания товара -->
+<div class="d-flex justify-content-end mb-3">
+    <a href="{% url 'catalog:product_create' %}" class="btn btn-primary">Создать товар</a>
+</div>
+
 <div class="row">
     {% for product in products %}
         <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                {% if product.image %}
-                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
-                {% else %}
-                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px; color: white;">
-                        Нет фото
+            <div class="card h-100 shadow-sm position-relative product-card">
+                <!-- Иконка редактирования в правом верхнем углу -->
+                <a href="{% url 'catalog:product_update' product.pk %}" class="position-absolute top-0 end-0 m-2" title="Редактировать" style="z-index: 10;">
+                    <span class="badge bg-secondary p-2" style="border-radius: 50%;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5l6.5-6.5zm-9.5 7.5 1.5-1.5a.5.5 0 0 1 .707-.707l-1.5 1.5a.5.5 0 0 1-.707.707z"/>
+                        </svg>
+                    </span>
+                </a>
+
+                <!-- Ссылка на страницу товара (вся карточка) -->
+                <a href="{% url 'catalog:product_detail' product.pk %}" class="text-decoration-none text-reset d-block">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                        <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px; color: white;">
+                            Нет фото
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text text-truncate">{{ product.description|truncatechars:100 }}</p>
+                        <p class="card-text fw-bold text-primary">{{ product.price }} ₽</p>
                     </div>
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">{{ product.name }}</h5>
-                    <p class="card-text text-truncate">{{ product.description|truncatechars:100 }}</p>
-                    <p class="card-text fw-bold text-primary">{{ product.price }} ₽</p>
-                    <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-outline-primary">Подробнее</a>
-                </div>
+                </a>
             </div>
         </div>
     {% endfor %}
 </div>
+
+<style>
+    .product-card {
+        transition: background-color 0.2s ease, box-shadow 0.2s ease;
+        border-radius: 8px;
+    }
+    .product-card:hover {
+        background-color: #e7f0ff;
+        box-shadow: 0 8px 20px rgba(0, 100, 255, 0.15);
+    }
+    .product-card a.position-absolute {
+        opacity: 0.6;
+        transition: opacity 0.2s;
+    }
+    .product-card a.position-absolute:hover {
+        opacity: 1;
+    }
+</style>
 {% endblock %}
