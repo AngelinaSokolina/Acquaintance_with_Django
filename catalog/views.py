@@ -1,5 +1,6 @@
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView
-from django.urls import reverse_lazy            #функция, которая превращает имя маршрута (например, catalog:home) в полный URL-адрес (например, /)
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Product
 from .forms import ProductForm
 
@@ -21,18 +22,17 @@ class ContactsView(TemplateView):
     template_name = 'contacts.html'
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_form.html'
-    success_url = reverse_lazy('catalog:home')      #«После успешного создания или редактирования товара перенаправь пользователя на главную страницу»
+    success_url = reverse_lazy('catalog:home')
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_form.html'
 
-    #вернуться на страницу товара после редактирования
     def get_success_url(self):
         return reverse_lazy('catalog:product_detail', kwargs={'pk': self.object.pk})

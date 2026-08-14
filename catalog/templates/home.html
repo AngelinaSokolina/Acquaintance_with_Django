@@ -3,16 +3,19 @@
 {% block title %}Главная - Skystore{% endblock %}
 
 {% block content %}
-<!-- Кнопка создания товара -->
+<!-- Кнопка создания товара (только для авторизованных) -->
+{% if user.is_authenticated %}
 <div class="d-flex justify-content-end mb-3">
     <a href="{% url 'catalog:product_create' %}" class="btn btn-primary">Создать товар</a>
 </div>
+{% endif %}
 
 <div class="row">
     {% for product in products %}
         <div class="col-md-4 mb-4">
             <div class="card h-100 shadow-sm position-relative product-card">
-                <!-- Иконка редактирования в правом верхнем углу -->
+                <!-- Иконка редактирования (только для авторизованных) -->
+                {% if user.is_authenticated %}
                 <a href="{% url 'catalog:product_update' product.pk %}" class="position-absolute top-0 end-0 m-2" title="Редактировать" style="z-index: 10;">
                     <span class="badge bg-secondary p-2" style="border-radius: 50%;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" viewBox="0 0 16 16">
@@ -20,6 +23,7 @@
                         </svg>
                     </span>
                 </a>
+                {% endif %}
 
                 <!-- Ссылка на страницу товара (вся карточка) -->
                 <a href="{% url 'catalog:product_detail' product.pk %}" class="text-decoration-none text-reset d-block">
