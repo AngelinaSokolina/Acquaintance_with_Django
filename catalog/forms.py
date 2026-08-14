@@ -10,7 +10,7 @@ FORBIDDEN_WORDS = [
 class ProductForm(forms.ModelForm):         #класс формы на основе модели
     class Meta:
         model = Product                     #привязываем форму к модели Product
-        fields = ['name', 'description', 'image', 'category', 'price']
+        fields = ['name', 'description', 'image', 'category', 'price', 'is_published']
 
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)

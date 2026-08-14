@@ -51,6 +51,8 @@ class Product(models.Model):
     - price: цена
     - created_at: дата создания
     - updated_at: дата изменения
+    - is_published:  поле «Опубликовано»
+    - owner: поле владельца товара
     """
     name = models.CharField(
         max_length=100,
@@ -85,10 +87,21 @@ class Product(models.Model):
         auto_now=True,
         verbose_name="дата последнего изменения"
     )
+    is_published = models.BooleanField(default=False, verbose_name="Опубликовано")
+    owner = models.ForeignKey(
+        'users.User',
+        on_delete=models.CASCADE,
+        verbose_name="Владелец",
+        null=True,
+        blank=True
+    )
 
     class Meta:
         verbose_name = "продукт"
         verbose_name_plural = "продукты"
+        permissions = [
+            ('can_unpublish_product', 'Может отменять публикацию продукта'),
+        ]
 
     def __str__(self):
         return self.name
