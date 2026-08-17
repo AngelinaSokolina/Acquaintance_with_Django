@@ -1,0 +1,41 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Каталог категорий{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Категории</h1>
+
+    {% if user.is_authenticated %}
+        <div class="d-flex justify-content-end mb-3">
+            <a href="{% url 'catalog:category_create' %}" class="btn btn-outline-dark">Добавить категорию</a>
+        </div>
+    {% endif %}
+
+    <div class="row">
+        {% for category in categories %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: {{ category.color }};">
+                            <a href="{% url 'catalog:category_products' category.id %}" style="color: {{ category.color }}; text-decoration: none;">
+                                {{ category.name }}
+                            </a>
+                        </h5>
+                        <p class="card-text">{{ category.description|truncatechars:100 }}</p>
+                        <a href="{% url 'catalog:category_products' category.id %}"
+                           class="btn btn-outline-primary"
+                           style="color: {{ category.color }}; border-color: {{ category.color }}; background-color: transparent; transition: all 0.3s;"
+                           onmouseover="this.style.backgroundColor='{{ category.color }}'; this.style.color='white';"
+                           onmouseout="this.style.backgroundColor='transparent'; this.style.color='{{ category.color }}';">
+                            Перейти
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>Категорий пока нет.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

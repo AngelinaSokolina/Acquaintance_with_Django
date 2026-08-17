@@ -19,9 +19,17 @@
         <p class="fw-bold text-primary">{{ product.price }} ₽</p>
         <p>Категория: {{ product.category.name }}</p>
 
-        <div class="mt-4">
+        <div class="mt-4 d-flex flex-column align-items-start gap-2">
+            <div>
+                {% if user.is_authenticated %}
+                    {% if user == product.owner or perms.catalog.can_unpublish_product %}
+                        <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-outline-success">Редактировать</a>
+                        <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-outline-danger">Удалить</a>
+                    {% endif %}
+                {% endif %}
+            </div>
             <a href="{% url 'catalog:home' %}" class="btn btn-outline-secondary">Назад</a>
-            <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-success">Редактировать</a>        </div>
+        </div>
     </div>
 </div>
 {% endblock %}

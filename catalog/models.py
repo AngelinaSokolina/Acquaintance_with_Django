@@ -10,6 +10,20 @@ class Category(models.Model):
     - created_at: дата создания записи в БД
     - updated_at: дата последнего изменения записи в БД
     """
+
+    COLORS = [
+        ('#FF4500', 'Оранжево-красный'),
+        ('#FF8C00', 'Тёмно-оранжевый'),
+        ('#8B008B', 'Тёмно-фиолетовый'),
+        ('#00008B', 'Тёмно-синий'),
+        ('#006400', 'Тёмно-зелёный'),
+        ('#8B0000', 'Тёмно-красный'),
+        ('#4B0082', 'Индиго'),
+        ('#2F4F4F', 'Тёмный серо-зелёный'),
+        ('#800000', 'Бордовый'),
+        ('#556B2F', 'Тёмно-оливковый'),
+    ]
+
     name = models.CharField(
         max_length=100,
         verbose_name="наименование"  # название поля в админке
@@ -25,6 +39,13 @@ class Category(models.Model):
     updated_at = models.DateTimeField(
         auto_now=True,  # автоматически обновляется при каждом сохранении
         verbose_name="дата последнего изменения"
+    )
+
+    color = models.CharField(
+        max_length=7,
+        choices=COLORS,
+        default='#000000',
+        verbose_name="Цвет"
     )
 
     class Meta:
@@ -105,3 +126,4 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
