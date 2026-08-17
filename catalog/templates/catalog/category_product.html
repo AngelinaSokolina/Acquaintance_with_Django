@@ -1,17 +1,29 @@
 {% extends 'catalog/base.html' %}
 
-{% block title %}Товары в категории: {{ category.name }}{% endblock %}
+{% block title %}{{ category.name }}{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
-    <h1 class="mb-4">Товары в категории: {{ category.name }}</h1>
+    <h2 class="mb-4" style="color: {{ category.color }};">{{ category.name }}</h2>
+
+        {% if user.is_authenticated %}
+            <div class="d-flex justify-content-end mb-3">
+                <a href="{% url 'catalog:product_create' %}"
+                   class="btn btn-outline-dark"
+                   style="color: {{ category.color }}; border-color: {{ category.color }}; transition: all 0.3s;"
+                   onmouseover="this.style.backgroundColor='{{ category.color }}'; this.style.color='white';"
+                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='{{ category.color }}';">
+                    Добавить товар
+                </a>
+            </div>
+        {% endif %}
 
     {% if products %}
         <div class="row">
             {% for product in products %}
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 shadow-sm">
-                        <a href="{% url 'catalog:product_detail' product.pk %}">
+                        <a href="{% url 'catalog:product_detail' product.pk %}" style="text-decoration: none;">
                             {% if product.image %}
                                 <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
                             {% else %}
@@ -22,12 +34,12 @@
                         </a>
                         <div class="card-body">
                             <h5 class="card-title">
-                                <a href="{% url 'catalog:product_detail' product.pk %}" class="text-decoration-none text-reset">
+                                <a href="{% url 'catalog:product_detail' product.pk %}" class="text-decoration-none" style="color: {{ category.color }};">
                                     {{ product.name }}
                                 </a>
                             </h5>
                             <p class="card-text text-truncate">{{ product.description|truncatechars:100 }}</p>
-                            <p class="card-text fw-bold text-primary">{{ product.price }} ₽</p>
+                            <p class="card-text fw-bold" style="color: {{ category.color }};">{{ product.price }} ₽</p>
                         </div>
                     </div>
                 </div>
@@ -36,7 +48,5 @@
     {% else %}
         <p>В этой категории пока нет товаров.</p>
     {% endif %}
-
-    <a href="{% url 'catalog:home' %}" class="btn btn-secondary mt-3">На главную</a>
 </div>
 {% endblock %}

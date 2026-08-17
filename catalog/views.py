@@ -45,7 +45,7 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class CategoryProductsView(TemplateView):
-    template_name = 'catalog/category_products.html'
+    template_name = 'catalog/category_product.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -53,3 +53,14 @@ class CategoryProductsView(TemplateView):
         context['products'] = get_products_by_category(category_id)
         context['category'] = Category.objects.get(id=category_id)
         return context
+
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'catalog/category_list.html'
+    context_object_name = 'categories'
+
+class CategoryCreateView(LoginRequiredMixin, CreateView):
+    model = Category
+    fields = ['name', 'description']
+    template_name = 'catalog/category_form.html'
+    success_url = reverse_lazy('catalog:category_list')
