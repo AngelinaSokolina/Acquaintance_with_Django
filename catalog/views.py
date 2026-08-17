@@ -1,8 +1,10 @@
-from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Product
 from .forms import ProductForm
+from .services import get_products_by_category
+from .models import Product, Category
 
 
 class HomeListView(ListView):
@@ -36,3 +38,19 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('catalog:product_detail', kwargs={'pk': self.object.pk})
+
+
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
+    model = Product
+    success_url = reverse_lazy('catalog:home')
+
+
+class CategoryProductsView(TemplateView):
+    template_name = 'catalog/category_products.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category_id = self.kwargs.get('category_id')
+        context['products'] = get_products_by_category(category_id)
+        context['category'] = Category.objects.get(id=category_id)
+        return context
